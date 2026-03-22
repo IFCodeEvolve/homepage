@@ -1,0 +1,658 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <title>IFCodeEvolve</title>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <script src="https://kit.fontawesome.com/f8ddf9854a.js" crossorigin="anonymous"></script>
+  <meta charset="utf-8">
+  <meta name="description" content="Steerable Instruction Following Coding Data Synthesis with Actor-Parametric Schema Co-Evolution">
+  <meta name="keywords" content="Self-Evolving Agentic Framework, Instruction Following, Automatic Data Synthesis">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <!-- <link rel="icon" type="image/png" href="./assets/doubao.png">
+  <link rel="apple-touch-icon" href="./assets/doubao.png">
+  <link rel="shortcut icon" type="image/png" href="./assets/doubao.png"> -->
+  <link href="https://fonts.googleapis.com/css?family=Google+Sans|Noto+Sans|Castoro" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@0.9.4/css/bulma.min.css">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/jpswalsh/academicons@1/css/academicons.min.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+  <style>
+    @font-face {
+      font-family: 'Byte Sans';
+      src: url('./assets/ByteSans-Medium.ttf') format('truetype');
+      font-weight: 500;
+    }
+    @font-face {
+      font-family: 'Byte Sans';
+      src: url('./assets/ByteSans-Bold.ttf') format('truetype');
+      font-weight: 700;
+    }
+    
+    body {
+      font-family: 'Noto Sans', sans-serif;
+    }
+    
+    h1, h2, h3, h4, h5, h6, .title {
+      font-family: 'Byte Sans', 'Google Sans', sans-serif !important;
+    }
+    
+    code {
+      background-color: #f3f4f6;
+      padding: 0.2em 0.4em;
+      border-radius: 3px;
+      font-size: 0.9em;
+      color: #2E5AA8;
+    }
+
+    .hero {
+      background: linear-gradient(135deg, #e8f0fb 0%, #f8f9fa 100%);
+      color: #1f2937;
+    }
+    
+    .publication-title {
+      font-family: 'Google Sans', sans-serif;
+      font-weight: 700;
+      color: #1f2937;
+      font-size: 3.5rem !important;
+    }
+
+    .publication-subtitle {
+       font-family: 'Google Sans', sans-serif;
+       font-weight: 500;
+       color: #4b5563;
+       font-size: 2.0rem;
+    }
+
+    .publication-authors {
+      font-family: 'Google Sans', sans-serif;
+      color: #374151;
+      font-size: 1.25rem;
+    }
+    
+    .publication-authors a {
+      color: #374151;
+      text-decoration: none;
+    }
+    
+    .publication-authors a:hover {
+      color: #2E5AA8;
+    }
+    
+    .author-block {
+      display: inline-block;
+      margin: 0.1rem 0.5rem;
+    }
+    
+    .equal-contribution {
+      font-size: 1.0rem;
+      color: #6b7280;
+      margin-top: 0.5rem;
+    }
+    
+    .affiliations {
+      margin-top: 0.5rem;
+      font-size: 1.0rem;
+      color: #6b7280;
+    }
+
+    .publication-links {
+      margin-top: 1.5rem;
+    }
+
+    .badges {
+      display: flex;
+      justify-content: center;
+      flex-wrap: wrap;
+      gap: 0.5rem;
+      padding: 1rem;
+    }
+    .badge {
+      display: inline-flex;
+      align-items: center;
+      padding: 0.6rem 1.2rem;
+      background: #2E5AA8;
+      color: #fff;
+      text-decoration: none;
+      font-family: sans-serif;
+      font-size: 1rem;
+      transition: background 0.2s, transform 0.2s;
+    }
+    .badge:hover {
+      background: #1e4a98;
+      transform: translateY(-2px);
+      color: #fff;
+    }
+    .badge svg,
+    .badge img {
+      width: 1.2em;
+      height: 1.2em;
+      margin-right: 0.5em;
+      fill: currentColor;
+    }
+
+    .key-achievements {
+      background: #ffffff;
+      border-radius: 1rem;
+      padding: 2.5rem;
+      box-shadow: 0 8px 16px rgba(10,10,10,0.05);
+      border: 1px solid #eee;
+    }
+    .key-achievements h2 {
+      font-family: 'Google Sans', sans-serif;
+      font-size: 2rem;
+      font-weight: 700;
+      margin-bottom: 2.5rem;
+      color: #1f2937;
+    }
+    .achievement-item {
+      text-align: center;
+      padding: 1rem;
+    }
+    .achievement-item .icon {
+      font-size: 2.5rem;
+      color: #2E5AA8;
+      margin-bottom: 1rem;
+    }
+    .achievement-item h3 {
+      font-size: 1.25rem;
+      font-weight: 600;
+      color: #1f2937;
+      margin-bottom: 0.5rem;
+    }
+    .achievement-item p {
+      color: #6b7280;
+      line-height: 1.6;
+    }
+    
+    .section-title h2 {
+        font-family: 'Google Sans', sans-serif;
+        font-size: 2rem;
+        font-weight: bold;
+        color: #1a1a1a;
+        margin-bottom: 1rem;
+    }
+    
+    .section-title p {
+        font-size: 1.1rem;
+        color: #666;
+        max-width: 700px;
+        margin: 0 auto;
+    }
+
+    .results-figure {
+      margin: 2rem 0;
+    }
+    .results-figure img {
+      border-radius: 0.5rem;
+    }
+    .results-figure figcaption {
+      text-align: center;
+      font-size: 0.9em;
+      margin-top: 1rem;
+      color: #555;
+    }
+    
+    .method-card {
+      background: white;
+      border-radius: 8px;
+      padding: 2rem;
+      box-shadow: 0 4px 8px rgba(0,0,0,0.05);
+      border: 1px solid #e5e7eb;
+      height: 100%;
+      transition: transform 0.2s, box-shadow 0.2s;
+    }
+
+    .method-card:hover {
+      transform: translateY(-4px);
+      box-shadow: 0 8px 16px rgba(0,0,0,0.1);
+    }
+    
+    .method-card .icon {
+      font-size: 1.75rem;
+      color: #2E5AA8;
+      margin-right: 1rem;
+    }
+    
+    .method-card h3 {
+      font-size: 1.25rem;
+      font-weight: 600;
+    }
+    
+    .downloads-table {
+      width: 100%;
+      margin-top: 1.5rem;
+      border-collapse: collapse;
+    }
+    .downloads-table th, .downloads-table td {
+      padding: 0.75rem 1rem;
+      border: 1px solid #e5e7eb;
+    }
+    .downloads-table th {
+      background-color: #f9fafb;
+      font-weight: 600;
+    }
+    
+    .leaderboard-table {
+        margin: 2rem auto;
+        width: 90%;
+    }
+
+    .leaderboard-table td:first-child {
+        font-weight: 600;
+    }
+    
+    .footer {
+      background-color: #363636;
+      color: #fff;
+    }
+    
+    .footer a {
+      color: #2E5AA8;
+    }
+    
+    pre code {
+      font-family: Menlo, Monaco, 'Courier New', monospace;
+    }
+
+    .video-container {
+      position: relative;
+      max-width: 80%;
+      margin: 0 auto;
+      border-radius: 0.5rem;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+
+    .video-container video {
+      width: 100%;
+      height: auto;
+      object-fit: contain;
+    }
+    
+    .step-card {
+      transition: transform 0.3s ease, box-shadow 0.3s ease;
+    }
+    
+    .step-card:hover {
+      transform: scale(1.05);
+      box-shadow: 0 8px 24px rgba(46, 90, 168, 0.2);
+    }
+    
+    a:hover > div {
+      transform: translateY(-4px);
+      box-shadow: 0 6px 20px rgba(46, 90, 168, 0.25) !important;
+    }
+    
+    a[href*="ollama.com/download"]:hover {
+      background: #1e4a98 !important;
+    }
+    
+    a[href*="ollama.com/zeyu-zheng"]:hover {
+      background: #2E5AA8 !important;
+      color: white !important;
+      transform: translateY(-2px);
+      box-shadow: 0 4px 8px rgba(46, 90, 168, 0.3);
+    }
+
+    /* Mobile responsive styles for navbar */
+    @media screen and (max-width: 768px) {
+      .navbar .container {
+        transform: translateX(0) !important;
+        padding: 0.5rem !important;
+      }
+      
+      .navbar .container > div {
+        padding: 0.5rem 0.5rem !important;
+      }
+      
+      .navbar img {
+        height: 25px !important;
+        max-height: 25px !important;
+      }
+      
+      .navbar > div > div > div {
+        padding-left: 0.5rem !important;
+      }
+    }
+    
+    @media screen and (max-width: 480px) {
+      .navbar .container {
+        transform: translateX(0) !important;
+        padding: 0.25rem !important;
+      }
+      
+      .navbar .container > div {
+        padding: 0.25rem 0.25rem !important;
+        gap: 0.5rem;
+      }
+      
+      .navbar img {
+        height: 20px !important;
+        max-height: 20px !important;
+      }
+    }
+
+  </style>
+</head>
+
+<body>
+  <nav class="navbar" role="navigation" aria-label="main navigation">
+    <div class="container" style="transform: translateX(-6rem);">
+      <div style="display: flex; justify-content: space-between; align-items: center; width: 100%; padding: 0.5rem 1rem;">
+        <div style="display: flex; justify-content: flex-start; align-items: center;">
+          <img src="./assets/seed_logo.svg" alt="ByteDance Seed Logo" style="height: 35px;">
+        </div>
+        <div style="display: flex; justify-content: center; align-items: center;">
+          <img src="./assets/yale_logo.svg" alt="Yale Logo" style="height: 40px;">
+        </div>
+      </div>
+    </div>
+  </nav>
+
+  <section class="hero">
+    <div class="hero-body">
+      <div class="container is-max-desktop">
+        <div class="columns is-centered">
+          <div class="column has-text-centered">
+            <h1 class="title is-1 publication-title is-bold">
+              IFCodeEvolve & IFCodeBench
+            </h1>
+            <h2 class="subtitle publication-subtitle">
+              A Self-Evolving Framework for Instruction Following Coding Data Synthesis
+            </h2>
+            <div class="publication-authors">
+              <span class="author-block"><a href="https://huangtinglin.github.io/" target="_blank">Tinglin Huang</a><sup>*1</sup></span>
+              <span class="author-block"><a href="https://allanchen95.github.io/" target="_blank">Bo Chen</a><sup>*2</sup></span>
+              <span class="author-block">Xiao Zhang<sup>2</sup></span>
+              <span class="author-block">Kai Shen<sup>2</sup></span>
+              <span class="author-block"><a href="https://www.cs.yale.edu/homes/ying-rex/" target="_blank">Rex Ying</a><sup>1</sup></span>
+            </div>
+            <div class="equal-contribution">
+                <p><sup>*</sup> Equal contribution</p>
+            </div>
+            <div class="affiliations">
+                <p><sup>1</sup>Yale University &nbsp;&nbsp; <sup>2</sup>ByteDance Seed</p>
+            </div>
+
+            <div class="badges">
+              <a href="./assert/paper.pdf" class="badge" target="_blank" rel="noopener">
+                <img src="./assets/arxiv_logo.svg" alt="arXiv" style="width: 1.2em; height: 1.2em; margin-right: 0.5em;">
+                <span>Paper</span>
+              </a>
+              <a href="https://github.com/IFCodeEvolve/homepage" class="badge" target="_blank" rel="noopener">
+                <img src="./assets/github_logo.svg" alt="GitHub" style="width: 1.2em; height: 1.2em; margin-right: 0.5em;">
+                <span>Code</span>
+              </a>
+              <a href="https://github.com/IFCodeEvolve/homepage/ifcodebench" class="badge" target="_blank" rel="noopener">
+                <img src="./assets/chart.png" alt="IFCodeBench" style="border-radius: 2px;">
+                <span>Benchmark</span>
+              </a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="section">
+    <!-- <section style="max-width: 1100px; margin: 0 auto; padding: 1rem 1rem;"> -->
+    <div class="container is-max-desktop">
+      <div class="columns is-centered has-text-centered">
+        <div class="column is-four-fifths">
+          <h2 class="title is-3">Introduction</h2>
+          <div class="content has-text-justified">
+            <p>
+              <strong>Instruction following (IF)</strong> is a critical capability of large language models (LLMs) in automatic programming, which serves as a bridge between human intent expressed in natural language and executable logic (as shown in the figure below). 
+              However, synthesizing large-scale instruction-paired coding data depends heavily on manual curation.
+            </p>
+            <div class="columns is-centered">
+                <div class="column is-10">
+                <figure class="results-figure">
+                    <img src="./assets/fig1.png" alt="IF Coding" style="width: 100%; background: white;">
+                    <figcaption>
+                        Instruction-driven code generation.
+                    </figcaption>
+                </figure>
+                </div>
+            </div>
+            <p>
+              We introduce <strong>IFCodeEvolve</strong>, a scalable instruction following (IF) coding data synthesis framework that leverages actor-parametric schema co-evolution. 
+              To ensure a steerable data synthesis, we apply parametric instruction, which represents a vast instruction space within a compact library of schema. 
+            </p>
+            <p>
+              Building upon this, we use two strategies to synthesize high-quality, complex IF coding data:
+              <strong>(1) MCTS-Guided Proof-by-Construction</strong>: We treat problem generation as a search process, adding constraints one by one from a library and immediately verifying they can be solved through code.
+              <strong>(2) Actor-Parametric Schema Co-Evolution</strong>: An actor model identifies difficult cases to improve the dataset while simultaneously refining the schema library based on MCTS statistics.
+            </p>
+            <p>
+              The sythestic data generated by IFCodeEvolve can significantly boosts base model performance with varying parameter sizes (1.3B to 32B). 
+              Besides, we curate <strong>IFCodeBench</strong>, a comprehensive human-verified benchmark equipped with solutions and robust AST-based verification.
+            </p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+  
+  <section class="section" id="technical-overview" style="background: #ffffff;">
+    <div class="container is-max-desktop">
+        <h2 class="title is-3 has-text-centered">Methodology</h2>
+        
+        <!-- Training Section -->
+        <div style="margin-top: 3rem;">
+          <h3 class="title is-4" style="color: #2E5AA8; margin-bottom: 1.5rem;">MCTS-Guided Proof-by-Construction</h3>
+          
+          <div class="columns is-centered">
+            <div class="column is-10">
+              <figure class="results-figure">
+                <img src="./assets/proof_by_construction.png" alt="Training Pipeline" style="width: 100%; background: white;">
+                <figcaption>
+                    Illustration of multi-round IF coding data augmentation.
+                </figcaption>
+              </figure>
+            </div>
+          </div>
+          
+          <div style="margin-top: 0rem; max-width: 900px; margin-left: auto; margin-right: auto;">
+            <p style="font-size: 1.0rem; line-height: 1.8; color: #374151; margin-bottom: 1.5rem;">
+              Coding instructions require strict logical consistency—conflicting constraints (e.g., naming rules vs. no-variable rules) can make problems unsolvable. To address this, we propose:
+            </p>
+            <p style="font-size: 1.0rem; line-height: 1.8; color: #374151; margin-bottom: 1.5rem;">
+              (1) Parametric Instruction: We represent diverse coding constraints as modular, programmable templates that include specific logic types and adjustable parameters, such as “The length of variable names {comparison} exceed {length} characters.”
+              Such representation enables LLMs to instantiate the constraint conditioned on the problem context.
+            </p>
+
+            <p style="font-size: 1.0rem; line-height: 1.8; color: #374151; margin-bottom: 1.5rem;">
+              (2) Monte Carlo Tree Search-based Sampler: To navigate the vast space of possible instruction combinations, we employ an MCTS-guided search that incrementally adds constraints while verifying their logical compatibility. 
+              Each step in the tree represents a "proof-by-construction" process, ensuring that every synthesized problem remains solvable and consistent before more complexity is added.
+            </p>
+          </div>
+        </div>
+
+        <!-- Inference Section -->
+        <div style="margin-top: 4rem;">
+          <h3 class="title is-4" style="color: #2E5AA8; margin-bottom: 1.5rem;">Actor-Parametric Schema Co-Evolution</h3>
+          
+          <div class="columns is-centered">
+            <div class="column is-10">
+              <figure class="results-figure">
+                <img src="./assets/coevolving.png" alt="Inference Architecture" style="width: 100%; background: white;">
+                <figcaption>
+                    Illustration of actor-schema co-evolution paradigm for IF coding data generation.
+                </figcaption>
+              </figure>
+            </div>
+          </div>
+          
+          <div style="margin-top: 0rem; max-width: 900px; margin-left: auto; margin-right: auto;">
+            <p style="font-size: 1.0rem; line-height: 1.8; color: #374151; margin-bottom: 1.5rem;">
+              To overcome the limits of static data generation, we extend our pipeline into a self-evolving framework that iteratively scales both problem difficulty and diversity:            
+            </p>
+            <p style="font-size: 1.0rem; line-height: 1.8; color: #374151; margin-bottom: 1.5rem;">
+              (1) Actor Evolution: 
+              The actor model is iteratively fine-tuned on the most challenging instances identified during MCTS sampling. This continuous learning loop progressively boosts the model's performance, enabling it to handle increasingly complex instructions.
+            </p>
+            <p style="font-size: 1.0rem; line-height: 1.8; color: #374151; margin-bottom: 1.5rem;">
+              (2) Instruction Schema Evolution: 
+            The schema library evolves by merging successful primitives and pruning ineffective ones based on sampler statistics. This dynamic expansion allows the framework to discover novel, high-order constraint combinations beyond the initial design.
+            </p>
+
+          </div>
+        </div>
+    </div>
+  </section>
+  
+  <section class="section" id="benchmark-performance" style="background: linear-gradient(to bottom, #ffffff 0%, #f8fbff 100%);">
+    <div class="container is-max-desktop">
+        <h2 class="title is-3 has-text-centered">Benchmark Performance</h2>
+
+        <table class="table is-fullwidth is-striped leaderboard-table">
+            <thead>
+                <tr>
+                    <th>Model</th>
+                    <th>IFEvalCode (Inst.)</th>
+                    <th>IFEvalCode (Prompt.)</th>
+                    <th>CodeIF (Inst.)</th>
+                    <th>CodeIF (Prompt.)</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>Qwen2.5-Coder-7B</td>
+                    <td>68.37%</td>
+                    <td>28.00%</td>
+                    <td>59.86%</td>
+                    <td>7.18%</td>
+                </tr>
+                <tr style="background-color: #e8f0fb; font-weight: bold;">
+                    <td>Qwen2.5-Coder-7B + IFCodeEvolve</td>
+                    <td>87.01%</td>
+                    <td>61.43%</td>
+                    <td>84.35%</td>
+                    <td>30.07%</td>
+                </tr>
+                <tr style="border-bottom: 2px solid #dbdbdb;"><td></td><td></td><td></td><td></td></tr>
+                
+                <tr>
+                    <td>Seed-Coder-8B</td>
+                    <td>80.51%</td>
+                    <td>46.67%</td>
+                    <td>73.37%</td>
+                    <td>15.23%</td>
+                </tr>
+                <tr style="background-color: #e8f0fb; font-weight: bold;">
+                    <td>Seed-Coder-8B + IFCodeEvolve</td>
+                    <td>85.19%</td>
+                    <td>60.95%</td>
+                    <td>85.20%</td>
+                    <td>33.33%</td>
+                </tr>
+
+                <tr style="border-bottom: 2px solid #dbdbdb;"><td></td><td></td><td></td><td></td></tr>
+                <tr>
+                    <td>DeekSeek-Coder-1.3B</td>
+                    <td>64.46%</td>
+                    <td>23.81%</td>
+                    <td>57.25%</td>
+                    <td>8.05%</td>
+                </tr>
+                <tr style="background-color: #e8f0fb; font-weight: bold;">
+                    <td>DeekSeek-Coder-1.3B + IFCodeEvolve</td>
+                    <td>78.22%</td>
+                    <td>43.33%</td>
+                    <td>79.85%</td>
+                    <td>20.11%</td>
+                </tr>
+
+                <tr style="border-bottom: 2px solid #dbdbdb;"><td></td><td></td><td></td><td></td></tr>
+                <tr>
+                    <td>Qwen2.5-Coder-14B</td>
+                    <td>75.49%</td>
+                    <td>41.90%</td>
+                    <td>75.71%</td>
+                    <td>13.51%</td>
+                </tr>
+                <tr style="background-color: #e8f0fb; font-weight: bold;">
+                    <td>Qwen2.5-Coder-14B + IFCodeEvolve</td>
+                    <td>87.06%</td>
+                    <td>65.71%</td>
+                    <td>87.62%</td>
+                    <td>35.63%</td>
+                </tr>
+
+                <tr style="border-bottom: 2px solid #dbdbdb;"><td></td><td></td><td></td><td></td></tr>
+                <tr>
+                    <td>Qwen2.5-Coder-32B</td>
+                    <td>84.92%</td>
+                    <td>57.62%</td>
+                    <td>81.61%</td>
+                    <td>25.00%</td>
+                </tr>
+                <tr style="background-color: #e8f0fb; font-weight: bold;">
+                    <td>Qwen2.5-Coder-32B + IFCodeEvolve</td>
+                    <td>89.62%</td>
+                    <td>70.95%</td>
+                    <td>88.83%</td>
+                    <td>41.47%</td>
+                </tr>
+            </tbody>
+        </table>
+        <figcaption class="has-text-centered" style="margin-top: 1rem; color: #666; font-size: 0.9em;">
+            Performance of different LLMs on existing benchmarks.
+        </figcaption>
+    </div>
+  </section>
+
+  <section class="section" id="technical-overview" style="background: #ffffff;">
+    <div class="container is-max-desktop">
+        <h2 class="title is-3 has-text-centered">IFCodeBench</h2>
+        
+        <!-- Training Section -->
+        <div style="margin-top: 3rem;">
+          <!-- <h3 class="title is-4" style="color: #2E5AA8; margin-bottom: 1.5rem;">MCTS-Guided Proof-by-Construction</h3> -->
+          
+          <div class="columns is-centered">
+            <div class="column is-10">
+              <figure class="results-figure">
+                <img src="./assets/ifcodebench.png" alt="Training Pipeline" style="width: 100%; background: white;">
+                <figcaption>
+                    Comparison on IFCodeBench.
+                </figcaption>
+              </figure>
+            </div>
+          </div>
+          
+          <div style="margin-top: 0rem; max-width: 900px; margin-left: auto; margin-right: auto;">
+            <p style="font-size: 1.0rem; line-height: 1.8; color: #374151; margin-bottom: 1.5rem;">
+              We curated a high-quality benchmark from our generated data using a strict human-in-the-loop verification process. We designed a rubric consisting of four binary sanity checks and two scalar quality metrics. 
+              An initial LLM-based filter first discarded invalid samples and identified high-potential candidates (Value = 3).
+              These candidates then underwent manual review, where human annotators applied the same criteria. 
+              Only instances confirmed by humans to possess high value were included in the final test set with <strong>530</strong> problems.
+            </p>
+          </div>
+        </div>
+    </div>
+  </section>
+
+  <script>
+    // Navbar burger menu toggle
+    document.addEventListener('DOMContentLoaded', () => {
+      const $navbarBurgers = Array.prototype.slice.call(document.querySelectorAll('.navbar-burger'), 0);
+      if ($navbarBurgers.length > 0) {
+        $navbarBurgers.forEach( el => {
+          el.addEventListener('click', () => {
+            const target = el.dataset.target;
+            const $target = document.getElementById(target);
+            el.classList.toggle('is-active');
+            $target.classList.toggle('is-active');
+          });
+        });
+      }
+    });
+  </script>
+
+</body>
+
+</html>
